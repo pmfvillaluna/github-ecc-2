@@ -53,7 +53,7 @@ public class Ex1Service{
 					break;
 							
 					case "C":
-					displayTable(table, rows, column);
+					System.out.println((table));
 					break;
 					
 					case "D":
@@ -126,7 +126,7 @@ public class Ex1Service{
 		}
     }
 	
-	public void findOccurence1(String[][]tableData, char occurence){
+	public int findOccurence1(String[][]tableData, char occurence){
 		int occurenceCount = 0;
 		String output="";
 		for (int ctrRows = 0; ctrRows < tableData.length; ctrRows++) {
@@ -134,16 +134,16 @@ public class Ex1Service{
 				for (int ctrChar = 0; ctrChar < tableData[ctrRows][ctrColumns].length(); ctrChar++) {
 					if (tableData[ctrRows][ctrColumns].charAt(ctrChar) == occurence) {
 						occurenceCount++;
-						output += "Occurence#"+occurenceCount+" found at array[" + ctrRows + "][" + ctrColumns + "] = "+tableData[ctrRows][ctrColumns]+"\n";
+						output += "Occurence \""+ occurence+ "\" #"+occurenceCount+" found at array[" + ctrRows + "][" + ctrColumns + "] = "+tableData[ctrRows][ctrColumns]+"\n";
 					}
 				}
 			}
 		}
-
-	System.out.println(output +"Total number of occurence: " + occurenceCount+"\n");
+		System.out.println(output);
+		return occurenceCount;
 	}
 	
-	public void findOccurence2(String[][]tableData, String occurence){
+	public int  findOccurence2(String[][]tableData, String occurence){
 		int occurenceCount = 0;
 		String output = "";
 		for (int ctrRows = 0; ctrRows < tableData.length; ctrRows++) {
@@ -152,29 +152,36 @@ public class Ex1Service{
 				String sub2 = sub1.substring(1) +tableData[ctrRows][ctrColumns].substring(2);
 					if(sub1.contains(occurence)||sub2.contains(occurence)){
 						occurenceCount++;
-						output += "Occurence#"+occurenceCount+" found at array[" + ctrRows + "][" + ctrColumns + "] = "+tableData[ctrRows][ctrColumns]+"\n";
+						output += "Occurence \""+ occurence+ "\" #"+occurenceCount+" found at array[" + ctrRows + "][" + ctrColumns + "] = "+tableData[ctrRows][ctrColumns]+"\n";
 					}
 				}
 			}
-	System.out.println(output+"Total number of occurence: " + occurenceCount+"\n");		
+		System.out.println(output);
+		return occurenceCount;
 	}
 	
-	public void findOccurence3(String[][]tableData, String occurence){
+	public int findOccurence3(String[][]tableData, String occurence){
 		int occurenceCount = 0;
 		String output= "";
 		for (int ctrRows = 0; ctrRows < tableData.length; ctrRows++) {
 			for (int ctrColumns = 0; ctrColumns < tableData[ctrRows].length; ctrColumns++) {
 					if (tableData[ctrRows][ctrColumns].equals(occurence)) {
 						occurenceCount++;
-						output += "Occurence#"+occurenceCount+" found at array[" + ctrRows + "][" + ctrColumns + "] = "+tableData[ctrRows][ctrColumns]+"\n";
+						output += "Occurence \""+ occurence+ "\" #"+occurenceCount+" found at array[" + ctrRows + "][" + ctrColumns + "] = "+tableData[ctrRows][ctrColumns]+"\n";
 					}
 			}
 		}
-
-	System.out.println(output +"Total number of occurence: " + occurenceCount+"\n");
+		System.out.println(output);
+		return occurenceCount;
 	}
-	
+
+
+
+	public int getNumberOfOccurrences(int occurrences){
+	return occurrences;
+	}
 	public void editTable(String [][] table, int maxRows, int maxCols){
+
 		int row = 0, col = 0;
 		String value="";
 		boolean correctValRow = false, correctValCol = false, correctVal=false;
@@ -216,7 +223,7 @@ public class Ex1Service{
 			table[row][col]=value;
 
 			System.out.println("Table updated...");
-			displayTable(table, maxRows, maxCols);
+			System.out.println(displayTable(table));
 		
 		}catch(InputMismatchException e){
 				System.out.println("You have entered the wrong value, please enter a number");
@@ -224,14 +231,18 @@ public class Ex1Service{
 		}
 	}
 	
-	public void displayTable(String[][] table, int rows, int columns){
+	public String displayTable(String[][] table){
+		int rows = table.length;
+		int columns = table[0].length;
+		String output = "";
 		System.out.println("You have chosen to display your table:");
 			for (int ctrRows=0; ctrRows < rows ; ctrRows++) {
 				for (int ctrColumns=0; ctrColumns < columns ; ctrColumns++) {
-					System.out.print( " | ["+ ctrRows +"]"+  "["+ctrColumns+"]"+" = " + table[ctrRows][ctrColumns]);
+					output+=" | ["+ ctrRows +"]"+  "["+ctrColumns+"]"+" = " + table[ctrRows][ctrColumns];
 				}
-				System.out.println("");
+				output+="\n";
 			}
+			return output;
 		}
-	
+
 }

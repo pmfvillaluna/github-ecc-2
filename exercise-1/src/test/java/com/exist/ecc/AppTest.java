@@ -1,20 +1,15 @@
 package com.exist.ecc;
 
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
-/**
- * Unit test for simple App.
- */
 public class AppTest 
 {
     /**
      * Rigorous Test :-)
      */
-    @Test
-    public void shouldAnswerWithTrue()
-    {
-        assertTrue( true );
+
+    public void Test(){
+        int actual = 2 + 1;
+        int expected = 1 + 2;
+        //assertEquals(expected, actual);
     }
+
 }
