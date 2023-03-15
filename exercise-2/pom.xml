@@ -30,8 +30,11 @@
  	<sourceDirectory>src/main/java/com/exist/ecc</sourceDirectory>
 	<resources>
 		<resource>
-			<directory>src/main/resources</directory>	
+			<directory>src/main/resources</directory>
 		</resource>
+        <resource>
+            <directory>src/main/resources/text-files</directory>
+        </resource>
 	</resources>        
       <plugins>
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
