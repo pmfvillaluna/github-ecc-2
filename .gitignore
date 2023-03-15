@@ -2,3 +2,7 @@ target/
 exercise-1/target/
 exercise-2/target/
 exercise-3/target/
+*.classpath
+*.project
+*.log
+*.iml
