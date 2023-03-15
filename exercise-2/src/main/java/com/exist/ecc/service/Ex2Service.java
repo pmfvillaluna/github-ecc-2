@@ -1,5 +1,6 @@
 package com.exist.ecc.service;
 
+import com.exist.ecc.service.Ex2Data;
 import java.util.ArrayList;
 import java.io.FileReader; 
 import java.io.FileWriter;
@@ -55,7 +56,7 @@ public class Ex2Service{
 		return fileName;
 	}
 
-		public com.exist.ecc.service.Ex2Data createMap(String fileName){
+		public Ex2Data createMap(String fileName){
 			String lines = "";
 			LinkedHashMap<String, String> keyPair = new LinkedHashMap<>();
 			ArrayList<ArrayList<String>> listOfWords = new ArrayList<>();
@@ -79,7 +80,7 @@ public class Ex2Service{
 			}catch(IOException e){
 				e.printStackTrace();
 			}
-			com.exist.ecc.service.Ex2Data kp = new com.exist.ecc.service.Ex2Data(listOfWords, keyPair, lineLimit, wordLimit, fileName);
+			Ex2Data kp = new Ex2Data(listOfWords, keyPair, lineLimit, wordLimit, fileName);
 		return kp;
 	}	
 	
@@ -96,7 +97,7 @@ public class Ex2Service{
 				fileName = chooseFile(files);
 				sameFile = true;
 			}
-			com.exist.ecc.service.Ex2Data kp = createMap(fileName);
+			Ex2Data kp = createMap(fileName);
 			System.out.println("Choose an option from the following..."
 			+"\nA - Search"
 			+"\nB - Add Row"
@@ -139,24 +140,32 @@ public class Ex2Service{
 		}
 	}
 	
-	public void searchTable(com.exist.ecc.service.Ex2Data kp){
+	public void searchTable(Ex2Data kp){
 		LinkedHashMap<String, String> keyPair = kp.getKeyPair();
 		System.out.println("Please enter what you want to search:");
 		String userInput = sc.nextLine();
-
-		kp.setFilteredWords(keyPair.entrySet()
-				.stream()
-				.flatMap(entry-> Stream.of(entry.getKey(), entry.getValue()))
-				.filter(elements-> elements.contains(userInput))
-				.collect(Collectors.toList()));
-
-		if(kp.getFilteredWords().isEmpty()){
-			System.out.println("No Occurrence");	
-		}else{
-			kp.getFilteredWords()
-				.stream()
-				.forEach(word->kp.countOccurrences(word, userInput));
-			kp.setFilteredWords(new ArrayList<>());
+		int rows = 0;
+		int columns = 0;
+		boolean hasOccurence = false;
+		for(Map.Entry<String, String> entry: keyPair.entrySet()){
+			String keys = entry.getKey();
+			String vals = entry.getValue();
+			if(columns>=kp.getWordLimit()){
+				columns = 0;
+				rows++;
+			}
+			if(keys.contains(userInput)){
+				System.out.println("["+rows+"]["+columns+"] - " + keys +" - " +countOccurrences(keys,userInput)+" Occurence KEY");
+				hasOccurence = true;
+			}
+			if(vals.contains(userInput)){
+				System.out.println("["+rows+"]["+columns+"] - " + vals +" - " +countOccurrences(vals, userInput) + " Occurence VALUES");
+				hasOccurence = true;
+			}
+			columns+=2;
+		}
+		if(!hasOccurence){
+			System.out.println("No occurrences found...");
 		}
 	}
 
@@ -171,7 +180,7 @@ public class Ex2Service{
        return count;
 	}
 	
-	public void printTable(com.exist.ecc.service.Ex2Data kp){
+	public void printTable(Ex2Data kp){
 		LinkedHashMap<String, String> keyPair = kp.getKeyPair();
 		int columnLimit = kp.getWordLimit();
         int rows = 0;
@@ -188,11 +197,11 @@ public class Ex2Service{
 		System.out.println("\n");
 	}
 	
-	public void editTable(com.exist.ecc.service.Ex2Data kp){
+	public void editTable(Ex2Data kp){
 		retrieveValue(kp);
 	}
 	
-	public void retrieveValue(com.exist.ecc.service.Ex2Data kp){
+	public void retrieveValue(Ex2Data kp){
 		LinkedHashMap<String, String> keyPair = kp.getKeyPair();
 		int lineLimit =  kp.getLineLimit();
 		int wordLimit = kp.getWordLimit();
@@ -252,7 +261,7 @@ public class Ex2Service{
 		updateFile(kp, oldValue, newValue);
 	}
 
-	public void updateFile(com.exist.ecc.service.Ex2Data kp, String oldValue, String newValue){
+	public void updateFile(Ex2Data kp, String oldValue, String newValue){
 		ArrayList<ArrayList<String>> listOfWords = kp.getListOfWords();
 		String fileName = kp.getFileName();
 			try{
@@ -274,12 +283,12 @@ public class Ex2Service{
 			}
 	}
 	
-	public void addRow(com.exist.ecc.service.Ex2Data kp){
+	public void addRow(Ex2Data kp){
 		ArrayList<ArrayList<String>> listOfLines = createRows(kp);
 		printAddedRows(listOfLines, kp.getFileName());
 	}
 	
-	public ArrayList<ArrayList<String>> createRows(com.exist.ecc.service.Ex2Data kp){
+	public ArrayList<ArrayList<String>> createRows(Ex2Data kp){
 		ArrayList<ArrayList<String>> listOfLines = kp.getListOfWords();
 		String fileName = kp.getFileName();
 		int wordLimit = kp.getWordLimit();

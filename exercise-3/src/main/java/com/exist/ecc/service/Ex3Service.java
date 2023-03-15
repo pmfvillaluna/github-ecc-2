@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.InputMismatchException;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
+import 	com.exist.ecc.service.Ex3Data;
 
 public class Ex3Service{
 	static Scanner sc = new Scanner(System.in);
@@ -53,7 +54,9 @@ public class Ex3Service{
 		return fileName;
 	}
 
-		public com.exist.ecc.service.Ex3DataHandler createMap(String fileName){
+
+
+		public Ex3Data createMap(String fileName){
 			String lines = "";
 			LinkedHashMap<String, String> keyPair = new LinkedHashMap<>();
 			ArrayList<ArrayList<String>> listOfWords = new ArrayList<>();
@@ -77,7 +80,7 @@ public class Ex3Service{
 			}catch(IOException e){
 				e.printStackTrace();
 			}
-			com.exist.ecc.service.Ex3DataHandler kp = new com.exist.ecc.service.Ex3DataHandler(listOfWords, keyPair, lineLimit, wordLimit, fileName);
+			Ex3Data kp = new Ex3Data(listOfWords, keyPair, lineLimit, wordLimit, fileName);
 		return kp;
 	}	
 	
@@ -94,7 +97,7 @@ public class Ex3Service{
 				fileName = chooseFile(files);
 				sameFile = true;
 			}
-			com.exist.ecc.service.Ex3DataHandler kp = createMap(fileName);
+			Ex3Data kp = createMap(fileName);
 			System.out.println("Choose an option from the following..."
 			+"\nA - Search"
 			+"\nB - Add Row"
@@ -137,7 +140,7 @@ public class Ex3Service{
 		}
 	}
 	
-	public void searchTable(com.exist.ecc.service.Ex3DataHandler kp){
+	public void searchTable(Ex3Data kp){
 		LinkedHashMap<String, String> keyPair = kp.getKeyPair();
 		System.out.println("Please enter what you want to search:");
 		String userInput = sc.nextLine();
@@ -153,23 +156,15 @@ public class Ex3Service{
 		}else{
 			kp.getFilteredWords()
 				.stream()
-				.forEach(word->kp.countOccurrences(word, userInput));
+				.forEach(word->{
+					System.out.println(word + "\tcontains " +kp.countOccurrences(word, userInput) + " occurrences");
+				});
 			kp.setFilteredWords(new ArrayList<>());
 		}
 	}
 
-	public int countOccurrences(String mainString, String userInput){
-        int position = 0;
-        int count = 0;
-        int inputLength = userInput.length();
-        while ((position = mainString.indexOf(userInput, position)) != -1) {
-           position = position + inputLength;
-           count++;
-        }
-       return count;
-	}
 	
-	public void printTable(com.exist.ecc.service.Ex3DataHandler kp){
+	public void printTable(Ex3Data kp){
 		LinkedHashMap<String, String> keyPair = kp.getKeyPair();
 		int columnLimit = kp.getWordLimit();
         int rows = 0;
@@ -186,11 +181,11 @@ public class Ex3Service{
 		System.out.println("\n");
 	}
 	
-	public void editTable(com.exist.ecc.service.Ex3DataHandler kp){
+	public void editTable(Ex3Data kp){
 		retrieveValue(kp);
 	}
 	
-	public void retrieveValue(com.exist.ecc.service.Ex3DataHandler kp){
+	public void retrieveValue(Ex3Data kp){
 		LinkedHashMap<String, String> keyPair = kp.getKeyPair();
 		int lineLimit =  kp.getLineLimit();
 		int wordLimit = kp.getWordLimit();
@@ -249,7 +244,7 @@ public class Ex3Service{
 		updateFile(kp, oldValue, newValue);
 	}
 
-	public void updateFile(com.exist.ecc.service.Ex3DataHandler kp, String oldValue, String newValue){
+	public void updateFile(Ex3Data kp, String oldValue, String newValue){
 		ArrayList<ArrayList<String>> listOfWords = kp.getListOfWords();
 		String fileName = kp.getFileName();
 			try{
@@ -271,12 +266,12 @@ public class Ex3Service{
 			}
 	}
 	
-	public void addRow(com.exist.ecc.service.Ex3DataHandler kp){
+	public void addRow(Ex3Data kp){
 		ArrayList<ArrayList<String>> listOfLines = createRows(kp);
 		printAddedRows(listOfLines, kp.getFileName());
 	}
 	
-	public ArrayList<ArrayList<String>> createRows(com.exist.ecc.service.Ex3DataHandler kp){
+	public ArrayList<ArrayList<String>> createRows(Ex3Data kp){
 		ArrayList<ArrayList<String>> listOfLines = kp.getListOfWords();
 		String fileName = kp.getFileName();
 		int wordLimit = kp.getWordLimit();

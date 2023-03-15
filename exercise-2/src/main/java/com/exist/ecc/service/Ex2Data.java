@@ -3,7 +3,7 @@ package com.exist.ecc.service;
 import java.util.LinkedHashMap;
 import java.util.ArrayList;
 import java.util.List;
-class Ex2Data {
+public class Ex2Data {
 	
 	ArrayList<ArrayList<String>> listOfWords;
 	ArrayList<String> linesOfWords;
@@ -23,14 +23,6 @@ class Ex2Data {
 
     }
 
-	public void setFilteredWords(List<String> filteredWords){
-		this.filteredWords = filteredWords;
-	}
-
-	public List<String> getFilteredWords(){
-		return filteredWords;
-	}
-	
 	public ArrayList<ArrayList<String>> getListOfWords(){
 		return listOfWords;
 	}
@@ -47,17 +39,6 @@ class Ex2Data {
     public String getFileName() {
         return fileName;
     }
-
-	public void countOccurrences(String mainWord, String userInput){
-		int position = 0;
-        int count = 0;
-        int inputLength = userInput.length();
-        while ((position = mainWord.indexOf(userInput, position)) != -1) {
-           position = position + inputLength;
-           count++;
-        }
-		System.out.println(mainWord + "\tcontains " +count + " occurrences");
-	}
 	
 	
 	
